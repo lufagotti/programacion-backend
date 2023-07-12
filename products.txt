@@ -1,0 +1,1 @@
+[{"title":"producto1","description":"description1","price":1000,"img":"img1","code":"PROD1","stock":20,"id":1},{"title":"producto2","description":"description2","price":1500,"img":"img2","code":"PROD2","stock":10,"id":2},{"title":"producto3","description":"description3","price":2500,"img":"img3","code":"PROD3","stock":15,"id":3}]
