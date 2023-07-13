@@ -32,27 +32,29 @@ class ProductManager {
         return console.log(respuestaGP)
     }
 
-    // getProductsById = async (id) => {
-    //     let respuestaBI = await this.readProducts()
-    //     let filter = respuestaBI.find(prod => prod.id === id)
-    //     if (!filter){
-    //         console.log("El producto no existe")
-    //     }else{
-    //         console.log(filter)
-    //     }
-    // }
+    getProductsById = async (id) => {
+        let respuestaBI = await this.readProducts()
+        let filter = respuestaBI.find(prod => prod.id === id)
+        if (!filter){
+            console.log("El producto no existe")
+        }else{
+            console.log(filter)
+        }
+    }
 
-    // deleteProducts = async (id) => {
-    //     let respuestaDP = await this.readProducts()
-    //     let prodFilter = respuestaDP.filter(prod => prod.id != id)
-    //     await fs.writeFile(this.patch, JSON.stringify(prodFilter))
-    //     console.log("El producto se elimino")
-    // }
+    deleteProducts = async (id) => {
+        let respuestaDP = await this.readProducts()
+        let prodFilter = respuestaDP.filter(prod => prod.id != id)
+        await fs.writeFile(this.patch, JSON.stringify(prodFilter))
+        console.log("El producto se elimino")
+    }
 
-    // updateProduct = async ({id, ...prod}) => {
-    //     await this.deleteProducts(id)
-    //     let prodModified = []
-    // }
+    updateProduct = async ({id, ...prod}) => {
+        await this.deleteProducts(id)
+        let prodSave = await this.readProducts();
+        let prodModified = [{id, ...prod}, ...prodSave]
+        await fs.writeFile(this.patch, JSON.stringify(prodModified))
+    }
 }
 
 const productos = new ProductManager();
@@ -62,15 +64,15 @@ const productos = new ProductManager();
 // productos.addProduct("producto3", "description3", 2500, "img3", "PROD3", 15)
 
 
-productos.getProducts()
+// productos.getProducts()
 // productos.getProductsById(4)
 // productos.deleteProducts(1)
-// productos.updateProduct({
-//     title: 'producto2',
-//     description: 'description2',
-//     price: 2500,
-//     img: 'img2',
-//     code: 'PROD2',
-//     stock: 10,
-//     id: 2
-// })
+productos.updateProduct({
+    title: 'producto3',
+    description: 'description3',
+    price: 4500,
+    img: 'img3',
+    code: 'PROD3',
+    stock: 15,
+    id: 3
+})
