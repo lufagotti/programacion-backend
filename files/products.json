@@ -1,0 +1,134 @@
+[
+  {
+    "id": 1,
+    "title": "Producto1",
+    "description": "Description1",
+    "price": 1200,
+    "thumbnail": "url1",
+    "category": "ropa",
+    "status": true,
+    "code": "PROD1",
+    "stock": 130
+  },
+  {
+    "id": 2,
+    "title": "Producto2",
+    "description": "Description2",
+    "price": 1200,
+    "thumbnail": "url2",
+    "category": "ropa",
+    "status": true,
+    "code": "PROD2",
+    "stock": 130
+  },
+  {
+    "id": 3,
+    "title": "Producto3",
+    "description": "Description3",
+    "price": 1200,
+    "thumbnail": "url3",
+    "category": "ropa",
+    "status": true,
+    "code": "PROD3",
+    "stock": 130
+  },
+  {
+    "id": 4,
+    "title": "Producto4",
+    "description": "Description4",
+    "price": 1200,
+    "thumbnail": "url4",
+    "category": "ropa",
+    "status": true,
+    "code": "PROD4",
+    "stock": 130
+  },
+  {
+    "id": 5,
+    "title": "Producto5",
+    "description": "Description5",
+    "price": 1200,
+    "thumbnail": "url5",
+    "category": "ropa",
+    "status": true,
+    "code": "PROD5",
+    "stock": 130
+  },
+  {
+    "id": 6,
+    "title": "Producto6",
+    "description": "Description6",
+    "price": 1200,
+    "thumbnail": "url6",
+    "category": "ropa",
+    "status": true,
+    "code": "PROD6",
+    "stock": 130
+  },
+  {
+    "id": 7,
+    "title": "Producto7",
+    "description": "Description7",
+    "price": 1200,
+    "thumbnail": "url7",
+    "category": "ropa",
+    "status": true,
+    "code": "PROD7",
+    "stock": 130
+  },
+  {
+    "id": 8,
+    "title": "Producto8",
+    "description": "Description8",
+    "price": 1200,
+    "thumbnail": "url8",
+    "category": "ropa",
+    "status": true,
+    "code": "PROD8",
+    "stock": 130
+  },
+  {
+    "id": 9,
+    "title": "Producto9",
+    "description": "Description9",
+    "price": 1200,
+    "thumbnail": "url9",
+    "category": "ropa",
+    "status": true,
+    "code": "PROD9",
+    "stock": 130
+  },
+  {
+    "id": 10,
+    "title": "Producto10",
+    "description": "Description10",
+    "price": 1200,
+    "thumbnail": "url10",
+    "category": "ropa",
+    "status": true,
+    "code": "PROD10",
+    "stock": 130
+  },
+  {
+    "id": 11,
+    "title": "Producto11",
+    "description": "Description11",
+    "price": 1200,
+    "thumbnail": "url11",
+    "category": "ropa",
+    "status": true,
+    "code": "PROD11",
+    "stock": 130
+  },
+  {
+    "id": 12,
+    "title": "Producto12",
+    "description": "Description12",
+    "price": 1200,
+    "thumbnail": "url12",
+    "category": "ropa",
+    "status": true,
+    "code": "PROD12",
+    "stock": 130
+  }
+]

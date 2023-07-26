@@ -1,30 +1,72 @@
-import {promises as fs} from "fs"
+import fs from "fs"
 
 export default class ProductManager {
     constructor(){
-        this.patch = "./products.txt"
-        this.products = []
-    }
-    static id = 0
-    
-    addProduct = async (title, description, price, img, code, stock) => {
-        ProductManager.id++
-        let newProduct = {
-            title,
-            description,
-            price,
-            img,
-            code,
-            stock,
-            id: ProductManager.id
-        }
-        this.products.push(newProduct)
-        await fs.writeFile(this.patch, JSON.stringify(this.products))
+        this.patch = "./files/products.json"
     }
 
-    readProducts = async () => {
-        let respuesta = await fs.readFile(this.patch, "utf-8")
-        return JSON.parse(respuesta)
+    generateId = async () => {
+        try {
+            if (fs.existsSync(this.patch)) {
+                const productlist = await fs.promises.readFile(this.patch, "utf-8");
+                const productlistJs = JSON.parse(productlist);
+                const counter = productlistJs.length;
+            if (counter == 0) {
+                return 1;
+            } else {
+                return productlistJs[counter - 1].id + 1;
+            }
+        }
+        } catch (error) {
+            throw new Error(error);
+        }
+    };
+    
+    addProduct = async (obj) => {
+        const {title, description, price, thumbnail, category, status=true, code, stock} = obj
+        if(title===undefined || description===undefined || price===undefined || category===undefined || code===undefined || status===undefined || stock===undefined){
+            console.error("Ingrese todos los datos del producto");
+            return;
+        }else{
+            const prodlist = await this.readProducts({})
+            const coderepeated = prodlist.find((el) => el.code === code)
+            if(coderepeated){
+                console.error("El codigo del producto es repetido");
+                return;
+            }else{
+                const id = await this.generateId()
+                let newProduct = {
+                    id,
+                    title,
+                    description,
+                    price,
+                    thumbnail,
+                    category,
+                    status,
+                    code,
+                    stock
+                }
+                prodlist.push(newProduct)
+                await fs.promises.writeFile(this.patch, JSON.stringify(prodlist, null, 2))
+            }
+        }
+    }
+
+    readProducts = async (info) => {
+        let {limit} = info ?? {}
+        try{
+            if(fs.existsSync(this.patch)){
+                let respuesta = await fs.promises.readFile(this.patch, "utf-8")
+                let prodListParse = JSON.parse(respuesta)
+                const prodListSlice = prodListParse.slice(0, limit);
+                return prodListSlice
+            }else{
+                throw new Error(error)
+            }
+        }
+        catch(error){
+            throw new Error(error)
+        }
     }
 
     getProducts = async () => {
@@ -33,27 +75,55 @@ export default class ProductManager {
     }
 
     getProductsById = async (id) => {
-        let respuestaBI = await this.readProducts()
-        let filter = respuestaBI.find(prod => prod.id === id)
+        const {pid} = id
+        let respuestaBI = await this.readProducts({})
+        let filter = respuestaBI.find(prod => prod.id === parseInt(pid))
         if (!filter){
-            console.log("El producto no existe")
+            console.error("El producto no existe")
         }else{
-            console.log(filter)
+            return filter
         }
     }
 
     deleteProducts = async (id) => {
-        let respuestaDP = await this.readProducts()
-        let prodFilter = respuestaDP.filter(prod => prod.id != id)
-        await fs.writeFile(this.patch, JSON.stringify(prodFilter))
+        const {pid} = id
+        let allProducts = await this.readProducts({})
+        let prodFilter = allProducts.filter(prod => prod.id != parseInt(pid))
+        await fs.promises.writeFile(this.patch, JSON.stringify(prodFilter, null, 2))
         console.log("El producto se elimino")
     }
 
-    updateProduct = async ({id, ...prod}) => {
-        await this.deleteProducts(id)
-        let prodSave = await this.readProducts();
-        let prodModified = [{id, ...prod}, ...prodSave]
-        await fs.writeFile(this.patch, JSON.stringify(prodModified))
+    updateProduct = async (id, obj) => {
+        const {pid} = id
+        const {title,description,price,thumbnail,category,status,code,stock} = obj
+        if( title===undefined || description===undefined || price===undefined || thumbnail===undefined || category===undefined || status===undefined || code===undefined || stock===undefined){
+            console.error("Ingrese todos los datos del producto para su actualizacion")
+            return
+        }else{
+            const prodSave = await this.readProducts({});
+            const codeRepetead = prodSave.find(el=>el.code === code)
+            if(codeRepetead){
+                console.error("El codigo del producto a actualizar es repetido")
+                return
+            }else{
+                const currentProdList = await this.readProducts()
+                // console.log(currentProdList)
+                const newProdList = currentProdList.map(elemento=>{
+                    if(elemento.id=== parseInt(pid)){
+                        const updatedProd={
+                            ...elemento,
+                            title,description,price,thumbnail,code,status,category,stock
+                        }
+                        // console.log(updatedProd)
+                        return updatedProd
+                    }else{
+                        return elemento
+                    }
+                })
+                const result = await fs.promises.writeFile(this.patch, JSON.stringify(newProdList, null, 2))
+                console.log(result)
+            }
+        }
     }
 }
 
