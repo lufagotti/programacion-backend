@@ -24,8 +24,8 @@ router.post("/carts", async (req, res) =>{
 })
 
 router.post("/carts/:cid/products/:pid", async (req, res) =>{
-    const {cid} = parseInt(req.params.cid)
-    const {pid} = parseInt(req.params.pid)
+    const cid = parseInt(req.params.cid)
+    const pid = parseInt(req.params.pid)
     const addProdToCart = await carrito.addProductToCart(cid,pid)
     res.send({message: "success",addProdToCart})
 })

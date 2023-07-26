@@ -50,16 +50,17 @@ export default class CartManager {
 
     addProductToCart = async (cid, pid) => {
             const listCart = await this.readCarts();
-            const cart = listCart.find(elemento.id===cid)
-            if(cart){
-                const prodIndex = cart.products.indexOf(element=> element.id === pid);
-                if(prodIndex===-1){
-                    
+            const cart = listCart.find(el=> el.id===cid)
+                const prodIndex = cart.products.findIndex(element=> element.pid === pid);
+                if(prodIndex !==-1){
+                    cart.products[prodIndex].quantity++
+                }else{
+                    cart.products.push({
+                        pid,
+                        quantity:1
+                    })
                 }
-            }else{
-                console.error("el carrito no existe")
-            }
-            await fs.promises.writeFile(this.patch, JSON.stringify(newProdList, null, 2))
+            await fs.promises.writeFile(this.patch, JSON.stringify(listCart, null, 2))
         }
 
     addCart = async () => {
