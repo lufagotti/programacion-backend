@@ -85,8 +85,7 @@ export default class ProductManager {
         }
     }
 
-    deleteProducts = async (id) => {
-        const {pid} = id
+    deleteProducts = async (pid) => {
         let allProducts = await this.readProducts({})
         let prodFilter = allProducts.filter(prod => prod.id != parseInt(pid))
         await fs.promises.writeFile(this.patch, JSON.stringify(prodFilter, null, 2))

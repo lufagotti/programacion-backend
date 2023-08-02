@@ -1,5 +1,5 @@
 import {Router} from "express"
-import { __dirname } from "../utils.js";
+import { __dirname } from "../src/utils.js";
 import ProductManager from "../src/components/productManager.js"
 
 const productos = new ProductManager(__dirname+"/files/products.json");
@@ -30,7 +30,8 @@ router.put("/products/:pid", async (req, res) =>{
 })
 
 router.delete("/products/:pid", async (req, res) =>{
-    let deleteProd = await productos.deleteProducts(req.params)
+    const id = parseInt(req.params.pid)
+    let deleteProd = await productos.deleteProducts(id)
     res.send({message: "success", deleteProd})
 })
 

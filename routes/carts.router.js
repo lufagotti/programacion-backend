@@ -1,5 +1,5 @@
 import {Router} from "express"
-import { __dirname } from "../utils.js";
+import { __dirname } from "../src/utils.js";
 import CartManager from "../src/components/cartManager.js";
 
 const carrito = new CartManager(__dirname+"/files/carts.json");
