@@ -152,5 +152,16 @@
     "status": true,
     "code": "code14",
     "stock": 130
+  },
+  {
+    "id": 15,
+    "title": "producto15",
+    "description": "aaaaa",
+    "price": "1200",
+    "thumbnail": "https://res.cloudinary.com/dzyku6fye/image/upload/v1691010891/producto1.png",
+    "category": "zapatillas",
+    "status": true,
+    "code": "adsdasf",
+    "stock": "10"
   }
 ]

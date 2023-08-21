@@ -2,7 +2,7 @@ import fs from "fs"
 
 export default class ProductManager {
     constructor(){
-        this.patch = "./files/products.json"
+        this.patch = "./src/dao/fileManagers/db/products.json"
     }
 
     generateId = async () => {
@@ -120,7 +120,7 @@ export default class ProductManager {
                     }
                 })
                 const result = await fs.promises.writeFile(this.patch, JSON.stringify(newProdList, null, 2))
-                console.log(result)
+                // console.log(result)
             }
         }
     }
