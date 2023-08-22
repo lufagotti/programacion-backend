@@ -20,8 +20,8 @@ router.get("/",async(req,res)=>{
         res.render("home",{listadeproductos})
     })
 
-router.get("/realTimeProducts",(req,res)=>{
-    res.render("realTimeProducts")
+router.get("/realtimeproducts",(req,res)=>{
+    res.render("realtimeproducts")
 })
 
 router.get("/chat",(req,res)=>{

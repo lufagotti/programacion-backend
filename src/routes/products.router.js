@@ -1,5 +1,5 @@
 import {Router} from "express"
-
+//usaremos mongo ya no fs
 // import ProductManager from "../dao/filemanagers/controllers/productManager.js"
 // const manager=new ProductManager(__dirname+'/dao/filemanagers/db/products.json')
 
@@ -56,7 +56,7 @@ router.get("/products/:pid", async (req, res) => {
   
   router.delete("/products/:pid", async (req, res) => {
     const id=req.params.pid
-    const deleteproduct = await manager.deleteProducts(id);
+    const deleteproduct = await manager.deleteProduct(id);
      res.json({ status: "success",deleteproduct });
   });
 

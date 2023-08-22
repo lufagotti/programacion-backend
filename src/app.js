@@ -1,60 +1,84 @@
 import express from "express"
-import viewRoute from "./routes/view.router.js"
-import prodRoute from "./routes/products.router.js"
-import cartRoute from "./routes/carts.router.js"
-import { __dirname } from "./utils.js"
+import viewRouter from "./routes/view.router.js"
+import productRouter from "./routes/products.router.js"
+import cartRouter from "./routes/carts.router.js"
+import {__dirname} from "./utils.js"
 import handlebars from "express-handlebars"
-import { Server } from "socket.io"
+import {Server} from "socket.io"
 import "./dao/dbConfig.js"
 
-const app = express()
+const app=express()
+const PORT=process.env.PORT||8080;
+
+
 app.use(express.json())
-app.use(express.urlencoded({extended : true}));
-
-console.log(__dirname)
-
+app.use(express.urlencoded({extended:true}))
 app.use(express.static(__dirname+"/public"))
 
-app.engine("handlebars", handlebars.engine())
-app.set("view engine","handlebars")
-app.set("views", __dirname+"/views")
+app.engine("handlebars",handlebars.engine())
+app.set('view engine', 'handlebars');
 
-app.use(express.Router())
-app.use("/api", prodRoute)
-app.use("/api", cartRoute)
-app.use("/", viewRoute)
+app.set("views",__dirname+"/views")
 
 
-const PORT = 8080;
-const httpServer = app.listen(PORT, () => {
-    console.log(`Express por Local Host ${httpServer.address().port}`);
+
+app.use("/api",productRouter)
+app.use("/api",cartRouter)
+app.use("/",viewRouter)
+
+
+const httpServer=app.listen(PORT,()=>{
+    console.log("server is working")
 })
-httpServer.on("error", (error) => console.log(`Error en el servidor ${error}`))
 
-const socketServer = new Server(httpServer)
 
-// import ProductManager from "./dao/fileManagers/controllers/productManager.js"
-// const prodManagerSocket = new ProductManager(__dirname+"/files/products.json")
+const socketServer= new Server(httpServer)
 
+// import ProductManager from "./dao/filemanagers/controllers/productManager.js"
+// const pmanagersocket=new ProductManager(__dirname+"/dao/filemanagers/db/products.json")
 import ProductManager from "./dao/mongoManagers/productManagerMongo.js"
-const prodManagerSocket = new ProductManager()
+const pmanagersocket=new ProductManager()
+
+// Importar MessagesManager
+import MessagesManager from "./dao/mongomanagers/messageManagerMongo.js";
+const messagesManager = new MessagesManager();
 
 
-socketServer.on("connection", async (socket)=>{
-    console.log("cliente conectado con id:", socket.id)
-    const listaDeProd = await prodManagerSocket.readProducts({})
-    socketServer.emit("enviodeprod", listaDeProd)
 
-    socket.on("addProduct", async(obj)=>{
-        await prodManagerSocket.addProduct(obj)
-        const listaDeProd = await prodManagerSocket.readProducts({})
-        socketServer.emit("enviodeprod", listaDeProd)
+socketServer.on("connection",async(socket)=>{
+    console.log("client connected con ID:",socket.id)
+     const listadeproductos=await pmanagersocket.readProducts()
+    socketServer.emit("enviodeproducts",listadeproductos)
+
+    socket.on("addProduct",async(obj)=>{
+    await pmanagersocket.addProduct(obj)
+    const listadeproductos=await pmanagersocket.readProducts()
+    socketServer.emit("enviodeproducts",listadeproductos)
     })
 
-    socket.on("deleteProduct", async(id)=>{
+    socket.on("deleteProduct",async(id)=>{
         console.log(id)
-        await prodManagerSocket.deleteProduct(id)
-        const listaDeProd = await prodManagerSocket.readProducts({})
-        socketServer.emit("enviodeprod", listaDeProd)
-    })
+       await pmanagersocket.deleteProduct(id)
+        const listadeproductos=await pmanagersocket.readProducts({})
+        socketServer.emit("enviodeproducts",listadeproductos)
+        })
+
+
+
+        socket.on("nuevousuario",(usuario)=>{
+            console.log("usuario" ,usuario)
+            socket.broadcast.emit("broadcast",usuario)
+           })
+           socket.on("disconnect",()=>{
+               console.log(`Usuario con ID : ${socket.id} esta desconectado `)
+           })
+       
+           socket.on("mensaje", async (info) => {
+            // Guardar el mensaje utilizando el MessagesManager
+            console.log(info)
+            await messagesManager.createMessage(info);
+            // Emitir el mensaje a todos los clientes conectados
+            socketServer.emit("chat", await messagesManager.getMessages());
+          });
+    
 })
