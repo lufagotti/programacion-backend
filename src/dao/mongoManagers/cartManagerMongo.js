@@ -1,9 +1,5 @@
 import {cartModel} from "../models/carts.model.js"
 
-import ProductManager from "../mongoManagers/productManagerMongo.js"
-
-const pm = new ProductManager()
-
 class CartManager {
 
 
@@ -19,8 +15,10 @@ class CartManager {
     
 
     getCartById = async (cartId) => {
+
         try {
-            const cart = await cartModel.findById(cartId);
+            const cart = await cartModel.findById(cartId)
+
             return cart;
         } catch (err) {
             console.error('Error al obtener el carrito por ID:', err.message);
@@ -65,8 +63,26 @@ class CartManager {
             return err;
         }
     };
-    
-    
+    deleteProductInCart = async (cid, products) => {
+        try {
+            return await cartModel.findOneAndUpdate(
+                { _id: cid },
+                { products },
+                { new: true })
+
+        } catch (err) {
+            return err
+        }
+
+    }
+    updateOneProduct = async (cid, products) => {
+        
+        await cartModel.updateOne(
+            { _id: cid },
+            {products})
+        return await cartModel.findOne({ _id: cid })
+    }
+
 
 
 };

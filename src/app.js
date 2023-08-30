@@ -40,7 +40,7 @@ import ProductManager from "./dao/mongoManagers/productManagerMongo.js"
 const pmanagersocket=new ProductManager()
 
 // Importar MessagesManager
-import MessagesManager from "./dao/mongomanagers/messageManagerMongo.js";
+import MessagesManager from "./dao/mongoManagers/messageManagerMongo.js";
 const messagesManager = new MessagesManager();
 
 
